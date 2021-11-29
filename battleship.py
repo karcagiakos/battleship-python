@@ -22,13 +22,53 @@ def turn_limit():
     pass
 
 
+def players_choice():
+    if mode == 1:
+        player_1 = input("Enter name of Player 1: ")
+        player_2 = input("Enter name of Player 2: ")
+    elif mode == 2:
+        player_1 = input("Enter your name: ")
+        player_2 = names.get_first_name()
+    elif mode == 3:
+        player_1 = names.get_first_name()
+        player_2 = input("Enter your name: ")
+    elif mode == 4:
+        player_1 = names.get_first_name()
+        player_2 = names.get_first_name()
+
+
 def game_mode():
-    #player vs.player or player vs. ai or ai vs. ai
-    pass
+    possible_modes = ["HUMAN-HUMAN", "HUMAN-AI", "AI-HUMAN", "AI-AI"]
+    
+    while True:
+        mode = input("Please choose between:\n HUMAN-HUMAN\n HUMAN-AI\n AI-HUMAN\n AI-AI\nGame modes!\nType the name of your choice.\n")
+        if mode.upper() in possible_modes:
+            game(mode.upper(), size)
+            break
+        elif mode.upper() == 'QUIT':
+            exit()
 
 
-def get_move():
-    pass
+def get_move(board):
+    while True:
+        move = input("Please give valid coordinates:\n- ")
+        move = move.upper()
+        if move == "QUIT" or move == "EXIT":
+            print("\nQuit.")
+            sys.exit()
+        else:
+            if len(move) == 2 or len(move) == 3 and move[0].isalpha() and move[1:].isnumeric():
+                row = ord(move[0]) - 65
+                col = int(move[1:]) - 1
+                if row > len(board)-1 or col > len(board)-1 or col == -1:
+                    print("\nOut of the board!\n")
+                    clear(1)
+                    continue
+                return row, col
+            else:
+                print("\nNot valid!\n")
+                clear(1)
+                # continue
 
 
 def ai_move():
@@ -42,13 +82,7 @@ def win_condition():
 
 def hit_or_miss():
     pass
-    # hit or miss 
-    # https://www.youtube.com/watch?v=_fSCkD-gWk0
-    # https://www.geeksforgeeks.org/copy-python-deep-copy-shallow-copy/
-    # https://www.programiz.com/python-programming/shallow-deep-copy
-    # https://askubuntu.com/questions/317880/is-it-possible-to-make-the-text-in-terminal-invisible
 
-    # https://www.youtube.com/watch?v=n1OB96dqFZM
 
 def placement_phase():
     #direct (or random)
@@ -61,7 +95,7 @@ def shooting_phase():
 
 def board_size():
     clear(0)
-    board_size = getpass("Board size: (X * X size)\n\n- ")
+    board_size = getpass.getpass("Board size: (X * X size)\n\n- ")
     while True:
         if board_size.isnumeric():
             print("\nLoading board size...")
@@ -105,10 +139,14 @@ def print_board(board):
 
 def main():
     size = board_size()
-    board1 = init_board(size) # LÁTOM, megvan
-    board2 = copy.deepcopy(board1)
-    board2[0][0] = "j"
-    print_board(board1)
+    board = init_board(size) # LÁTOM, megvan
+    board_copy = copy.deepcopy(board)
+    board_copy[0][0] = "j"
+    print_board(board)
+    print_board(board_copy)
+    row, col = get_move(board)
+
+
 
 if __name__ == "__main__":
     main()
