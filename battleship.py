@@ -3,6 +3,7 @@ import os
 import colorama
 import copy
 import getpass
+import names 
 
 
 def clear(s): # ez kész
@@ -84,9 +85,11 @@ def hit_or_miss():
     pass
 
 
-def placement_phase():
-    #direct (or random)
-    pass
+def placement_phase(board_copy):
+    if board_copy[row][col] == "0":
+        board[row][col] = "X"
+    else:
+        print("Reserved coordinate!")
 
 
 def shooting_phase():
@@ -103,6 +106,10 @@ def board_size():
         else:
             print("\nLoading default board size...")
             return 3
+
+
+def valid_input(board_copy, row, col):
+    
 
 
 def init_board(board_size=3):
@@ -144,7 +151,10 @@ def main():
     board_copy[0][0] = "j"
     print_board(board)
     print_board(board_copy)
+
+    while 
     row, col = get_move(board)
+    placement_phase(board_copy):
 
 
 
