@@ -2,6 +2,7 @@ import time
 import os
 import colorama
 import copy
+import getpass
 
 
 def clear(s): # ez kész
@@ -10,7 +11,7 @@ def clear(s): # ez kész
 
 
 def main_menu():
-    #board méret
+    #board mérethow to make something invisible in python
     #turn limit
     #játékos mód
     pass
@@ -45,6 +46,9 @@ def hit_or_miss():
     # https://www.youtube.com/watch?v=_fSCkD-gWk0
     # https://www.geeksforgeeks.org/copy-python-deep-copy-shallow-copy/
     # https://www.programiz.com/python-programming/shallow-deep-copy
+    # https://askubuntu.com/questions/317880/is-it-possible-to-make-the-text-in-terminal-invisible
+
+    # https://www.youtube.com/watch?v=n1OB96dqFZM
 
 def placement_phase():
     #direct (or random)
@@ -57,7 +61,7 @@ def shooting_phase():
 
 def board_size():
     clear(0)
-    board_size = input("Board size: (X * X size)\n\n- ")
+    board_size = getpass("Board size: (X * X size)\n\n- ")
     while True:
         if board_size.isnumeric():
             print("\nLoading board size...")
@@ -77,13 +81,34 @@ def init_board(board_size=3):
     return board
 
 
+def print_board(board):
+    print()
+    string = "  "
+    for number in range(1, len(board)+1):
+        string += str(number) + "  "
+    list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    msg = ""
+    for i, row in enumerate(board):
+        element = row[0]
+        element_str = f"{list[i]}" + '{:^{width}}'.format(element, width=3)
+        msg = msg + element_str
+        for element in row[1:]:
+            element_str = '{:^{width}}'.format(element, width=3)
+            msg = msg + element_str
+        msg = msg 
+        if i is not len(board) - 1:
+            element_str = " " + len(board) * "{:^{width}}" .format("", width=3)
+            msg = msg + element_str[:-1]
+            msg = msg + '\n'
+    print(string + "\n" + msg)
+
+
 def main():
     size = board_size()
-    board1, board2 = init_board(size) # LÁTOM, megvan
+    board1 = init_board(size) # LÁTOM, megvan
     board2 = copy.deepcopy(board1)
     board2[0][0] = "j"
-    print(board1)
-    print(board2)
+    print_board(board1)
 
 if __name__ == "__main__":
     main()
