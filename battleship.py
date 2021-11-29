@@ -1,161 +1,133 @@
 import time
 import os
-import colorama
+import string
 import copy
-import getpass
-import names 
 
 
-def clear(s): # ez kész
+def clear(s):
     time.sleep(s)
     os.system("cls||clear")
 
 
-def main_menu():
-    #board mérethow to make something invisible in python
-    #turn limit
-    #játékos mód
-    pass
-
-
-def turn_limit():
-    #50nél nagyobb, vége a játéknak
-    pass
-
-
-def players_choice():
-    if mode == 1:
-        player_1 = input("Enter name of Player 1: ")
-        player_2 = input("Enter name of Player 2: ")
-    elif mode == 2:
-        player_1 = input("Enter your name: ")
-        player_2 = names.get_first_name()
-    elif mode == 3:
-        player_1 = names.get_first_name()
-        player_2 = input("Enter your name: ")
-    elif mode == 4:
-        player_1 = names.get_first_name()
-        player_2 = names.get_first_name()
-
-
-def game_mode():
-    possible_modes = ["HUMAN-HUMAN", "HUMAN-AI", "AI-HUMAN", "AI-AI"]
-    
-    while True:
-        mode = input("Please choose between:\n HUMAN-HUMAN\n HUMAN-AI\n AI-HUMAN\n AI-AI\nGame modes!\nType the name of your choice.\n")
-        if mode.upper() in possible_modes:
-            game(mode.upper(), size)
-            break
-        elif mode.upper() == 'QUIT':
-            exit()
-
-
-def get_move(board):
-    while True:
-        move = input("Please give valid coordinates:\n- ")
-        move = move.upper()
-        if move == "QUIT" or move == "EXIT":
-            print("\nQuit.")
-            sys.exit()
-        else:
-            if len(move) == 2 or len(move) == 3 and move[0].isalpha() and move[1:].isnumeric():
-                row = ord(move[0]) - 65
-                col = int(move[1:]) - 1
-                if row > len(board)-1 or col > len(board)-1 or col == -1:
-                    print("\nOut of the board!\n")
-                    clear(1)
-                    continue
-                return row, col
-            else:
-                print("\nNot valid!\n")
-                clear(1)
-                # continue
-
-
-def ai_move():
-    #random or intelligence
-    pass
-
-
-def win_condition():
-    pass
-
-
-def hit_or_miss():
-    pass
-
-
-def placement_phase(board_copy):
-    if board_copy[row][col] == "0":
-        board[row][col] = "X"
-    else:
-        print("Reserved coordinate!")
-
-
-def shooting_phase():
-    pass
+def menu():
+    print("Welcome to Battleship!")
 
 
 def board_size():
     clear(0)
-    board_size = getpass.getpass("Board size: (X * X size)\n\n- ")
+    size = input("Board size: (X * X size)\n\n- ")
     while True:
-        if board_size.isnumeric():
+        if size.isnumeric():
             print("\nLoading board size...")
-            return int(board_size)
+            return int(size)
         else:
             print("\nLoading default board size...")
-            return 3
+            return 5
 
 
-def valid_input(board_copy, row, col):
-    
-
-
-def init_board(board_size=3):
-    board = []
-    for row in range(board_size):
-        row = []
-        for col in range(board_size):
-            row.append("O")
-        board.append(row)
+def init_board(size=5):
+    board = [["O"] * size for i in range(size)]
     return board
 
 
 def print_board(board):
-    print()
-    string = "  "
-    for number in range(1, len(board)+1):
-        string += str(number) + "  "
-    list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    msg = ""
-    for i, row in enumerate(board):
-        element = row[0]
-        element_str = f"{list[i]}" + '{:^{width}}'.format(element, width=3)
-        msg = msg + element_str
-        for element in row[1:]:
-            element_str = '{:^{width}}'.format(element, width=3)
-            msg = msg + element_str
-        msg = msg 
-        if i is not len(board) - 1:
-            element_str = " " + len(board) * "{:^{width}}" .format("", width=3)
-            msg = msg + element_str[:-1]
-            msg = msg + '\n'
-    print(string + "\n" + msg)
+    alphabet = list(string.ascii_uppercase)
+    line = "   "
+    for letter in range(len(board[0])):
+        line += str(letter+1) + "  "
+    print(line+"\n")
+    for row in range(len(board)):
+        print(alphabet[row], end="  ")
+        for col in range(len(board[0])):
+            print(board[row][col], end="  ")
+        print()
+
+
+def game_mode():
+    # human vs. human, ai vs. human, ai vs. ai
+    pass
+
+
+def get_players():
+    # game mode alapján, ha van ai, random nevet adni neki
+    player1 = input("Enter your name:\n- ")
+    player2 = input("Enter your name:\n- ")
+    return player1, player2
+
+
+def get_move():
+    # bekérni az inputot a felhasználótól
+    # is_valid_input függvényt használni szabályos-e a lépés
+    # átalakítani a betűket számmá, a visszaadott értékek 0-val kezdődjenek
+    # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
+    pass
+
+
+def ai_move():
+    # random lépések szabályoknak megfelelően
+    # később lépések az alapján, hogy hova érdemes inkább lépni
+    # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
+    pass
+
+
+def is_valid_input():
+    # ellenőrzi, phase-nek megfelelően, hogy az adott lépés, amit a felhasználó megad a get_move-ban, szabályos-e
+    # szabályoknak megfelel
+    # nincs kint a tábla határain
+    # először egy betű, majd egy szám
+    # nem foglalt-e már placement phase alatt az a hely
+    # stb
+    pass
+
+
+def placement_phase():
+    # player 1 kezd, leteszi a szabályoknak megfelelően az összes hajóját
+    # player 2 következik
+    # a hajók a placement boardokon tárolódnak
+    pass
+
+
+def shooting_phase():
+    # player 1 kezd,
+    # tippel, a szabályoknak megfelelően történik valami a shooting boardon
+    # a shooting board kerül kiprintelésre, és a hajók felfedésére a mark függvénnyel
+    # körök vannak, player 2 második kör, és így tovább
+    # win conditions ellenőrzi, hogy nyer-e valaki
+    pass
+
+
+def mark():
+    # a játékos vagy az ai lépését felviszi a megfelelő játékos shooting boardjára
+    # gyakorlatilag a visszakapott row, col értéket behelyetesíti a szabályoknak megfelelő betüvel
+    # ellenőrzi, akár itt, akár egy külön függvényben, hogy egy hajó összes elemét megtalálták-e, ilyenkor elsüllyed
+    pass
+
+
+def win_conditions():
+    # turn limit, 50 kör után döntetlen
+    # ha elsüllyed valaki összes hajója, nyer az ellenfél
+    # stb, szabályoknak megfelelően
+    pass
 
 
 def main():
+    clear(0)
+    menu()
+    clear(1)
+    player1, player2 = get_players()
+    clear(1)
     size = board_size()
-    board = init_board(size) # LÁTOM, megvan
-    board_copy = copy.deepcopy(board)
-    board_copy[0][0] = "j"
-    print_board(board)
-    print_board(board_copy)
-
-    while 
-    row, col = get_move(board)
-    placement_phase(board_copy):
-
+    player_1_placement_board = init_board(size)
+    player_2_placement_board = copy.deepcopy(player_1_placement_board)
+    player_1_shooting_board = copy.deepcopy(player_1_placement_board)
+    player_2_shooting_board = copy.deepcopy(player_1_placement_board)
+    clear(1)
+    print_board(player_1_placement_board)
+    while True:
+        placement_phase()
+        shooting_phase()
+        if win_conditions():  # ekkor van vége a játéknak
+            return
 
 
 if __name__ == "__main__":
