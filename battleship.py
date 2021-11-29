@@ -1,6 +1,7 @@
 import time
 import os
 import colorama
+import copy
 
 
 def clear(s): # ez kész
@@ -42,7 +43,8 @@ def hit_or_miss():
     pass
     # hit or miss 
     # https://www.youtube.com/watch?v=_fSCkD-gWk0
-
+    # https://www.geeksforgeeks.org/copy-python-deep-copy-shallow-copy/
+    # https://www.programiz.com/python-programming/shallow-deep-copy
 
 def placement_phase():
     #direct (or random)
@@ -72,14 +74,16 @@ def init_board(board_size=3):
         for col in range(board_size):
             row.append("O")
         board.append(row)
-    return board1, board2
+    return board
 
 
 def main():
     size = board_size()
-    board1, board2 = init_board(size)
-    print(board)
-
+    board1, board2 = init_board(size) # LÁTOM, megvan
+    board2 = copy.deepcopy(board1)
+    board2[0][0] = "j"
+    print(board1)
+    print(board2)
 
 if __name__ == "__main__":
     main()
