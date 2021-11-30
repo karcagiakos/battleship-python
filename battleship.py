@@ -23,17 +23,18 @@ def board_size():
         size = input("Board size: \n- ")
         if size.isnumeric() and int(size) < 11 and int(size) > 0:
             return int(size)
-        clear(0)
+        print("Invalid input! Try again!")
+        clear(1)
 
 
 def init_board(size=5):
-    board = [["O"] * size for i in range(size)]
+    board = [["🇴"] * size for i in range(size)]
     return board
 
 
 def print_board(board):
     alphabet = list(string.ascii_uppercase)
-    line = "   "
+    line = "    "
     for letter in range(len(board[0])):
         line += str(letter+1) + "  "
     print(line+"\n")
@@ -51,7 +52,8 @@ def game_mode():
         mode = input("- ")
         if mode.isnumeric() and int(mode) < 3 and int(mode) > 0:
             return int(mode)
-        clear(0)
+        print("Invalid input! Try again!")
+        clear(1)
 
 
 def players(mode):
@@ -65,7 +67,7 @@ def players(mode):
 
 
 def get_move():
-    move = input("\nPlease give valid cooridantes:\n- ")
+    move = input("\nPlease give valid cooridanates:\n- ")
     return move
 
 
@@ -75,42 +77,52 @@ def ai_move():
 
 def is_valid_input(board, move):
     move = move.upper()
-    if len(move) == 2 and move[0].isalpha() and move[1].isnumeric():
-        row = ord(move[0]) - 65
-        col = int(move[1]) - 1
-        if row > len(board)-1 or col > len(board)-1 or col == -1:
-            print("\nOut of the board!\n")
-            return False
-        return True
-    else:
-        print("\nNot valid!\n")
-        return False
+    if len(move) == 2:
+        if move[0].isalpha() and move[1].isnumeric():
+            row = ord(move[0]) - 65
+            col = int(move[1]) - 1
+            if row > len(board)-1 or col > len(board)-1 or col == -1:
+                print("Invalid input! Try again!")
+                return False, 0, 0
+            return True, row, col
+        else:
+            print("Invalid input! Try again!")
+            return False, 0, 0
+    elif len(move) == 3:
+        if move[0].isalpha() and move[1].isnumeric() and move[2].isnumeric():
+            row = ord(move[0]) - 65
+            col = int(int(str(move[1]) + str(move[2])) ) - 1
+            if row > len(board)-1 or col > len(board)-1 or col == -1:
+                print("Invalid input! Try again!")
+                return False, 0, 0
+            return True, row, col
+        else:
+            print("Invalid input! Try again!")
+            return False, 0, 0
+
+
+def mark(board, row, col):
+    if board[row][col] == "🇴":
+        board[row][col] = "🇭"
+
+
+def win_conditions():
+    pass
 
 
 def placement_phase(board):
     while True:
         print_board(board)
         move = get_move()
-        is_valid = is_valid_input(board, move)
+        is_valid, row, col = is_valid_input(board, move)
         clear(1)
         if is_valid:
             break
-    row = ord(move[0]) - 97
-    col = int(move[1]) - 1
     mark(board, row, col)
     clear(0)
 
 
 def shooting_phase():
-    pass
-
-
-def mark(board, row, col):
-    if board[row][col] == "O":
-        board[row][col] = "X"
-
-
-def win_conditions():
     pass
 
 
