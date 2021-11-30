@@ -10,19 +10,20 @@ def clear(s):
 
 
 def menu():
-    print("Welcome to Battleship!")
+    print("Welcome to Battleship! You will sink!")
+    clear(1)
+    mode = game_mode()
+    clear(1)
+    player1, player2 = players(mode)
+    return player1, player2
 
 
 def board_size():
-    clear(0)
-    size = input("Board size: (X * X size)\n\n- ")
     while True:
-        if size.isnumeric():
-            print("\nLoading board size...")
+        size = input("Board size: \n- ")
+        if size.isnumeric() and int(size) < 11 and int(size) > 0:
             return int(size)
-        else:
-            print("\nLoading default board size...")
-            return 5
+        clear(0)
 
 
 def init_board(size=5):
@@ -44,38 +45,40 @@ def print_board(board):
 
 
 def game_mode():
-    # human vs. human, ai vs. human, ai vs. ai
-    pass
+    # possible_modes = [ "HUMAN-HUMAN", "HUMAN-AI", "AI-HUMAN", "AI-AI" ]
+    # while True:
+    #     mode = int(input("Please choose game mode:\n 1: HUMAN-HUMAN\n 2: HUMAN-AI\n 3: AI-HUMAN\n 4: AI-AI\nType the number of your choice.\n"))
+    #     if mode not in range(1, len(possible_modes)+1):
+    #         print("Invalid input")
+    #         continue
+    #     else:
+    #         return possible_modes[int(mode)-1]
+    while True:
+        print("1. Single player")
+        print("2. Multiplayer")
+        mode = input("- ")
+        if mode.isnumeric() and int(mode) < 3 and int(mode) > 0:
+            return int(mode)
+        clear(0)
 
 
-def get_players():
-    # game mode alapján, ha van ai, random nevet adni neki
-    player1 = input("Enter your name:\n- ")
-    player2 = input("Enter your name:\n- ")
+def players(mode):
+    if mode == 1:
+        player1 = input("Enter your name:\n- ")
+        player2 = "AI"
+    else:
+        player1 = input("Enter your name:\n- ")
+        player2 = input("Enter your name:\n- ")
     return player1, player2
 
 
-def get_move(board):
+def get_move():
     # bekérni az inputot a felhasználótól
     # is_valid_input függvényt használni szabályos-e a lépés
     # átalakítani a betűket számmá, a visszaadott értékek 0-val kezdődjenek
     # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
-    while True:
-        move = input("\nPlease give valid cooridantes:\n- ")
-        move = move.upper()
-        if move == "QUIT" or move == "EXIT":
-            print("Exit the game!")
-            sys.exit()
-        else:
-            if len(move) == 2 and move[0].isalpha() and move[1].isnumeric():
-                row = ord(move[0]) - 65
-                col = int(move[1]) - 1
-                if row > len(board)-1 or col > len(board)-1 or col == -1:
-                    print("\nOut of the board!\n")
-                    continue
-                return row, col
-            else:
-                print("\nNot valid!\n")
+    move = input("\nPlease give valid cooridantes:\n- ")
+    return move
 
 
 def ai_move():
@@ -85,25 +88,41 @@ def ai_move():
     pass
 
 
-def is_valid_input():
+def is_valid_input(board, move):
     # ellenőrzi, phase-nek megfelelően, hogy az adott lépés, amit a felhasználó megad a get_move-ban, szabályos-e
     # szabályoknak megfelel
     # nincs kint a tábla határain
     # először egy betű, majd egy szám
     # nem foglalt-e már placement phase alatt az a hely
     # stb
-    pass
+    move = move.upper()
+    if len(move) == 2 and move[0].isalpha() and move[1].isnumeric():
+        row = ord(move[0]) - 65
+        col = int(move[1]) - 1
+        if row > len(board)-1 or col > len(board)-1 or col == -1:
+            print("\nOut of the board!\n")
+            return False
+        return True
+    else:
+        print("\nNot valid!\n")
+        return False
 
 
 def placement_phase(board):
     # player 1 kezd, leteszi a szabályoknak megfelelően az összes hajóját
     # player 2 következik
     # a hajók a placement boardokon tárolódnak
-    print_board(board)
-    row, col = get_move(board)
+    while True:
+        print_board(board)
+        move = get_move()
+        is_valid = is_valid_input(board, move)
+        clear(1)
+        if is_valid:
+            break
+    row = ord(move[0]) - 97
+    col = int(move[1]) - 1
     mark(board, row, col)
-    clear(0.5)
-
+    clear(0)
 
 
 def shooting_phase():
@@ -132,9 +151,7 @@ def win_conditions():
 
 def main():
     clear(0)
-    menu()
-    clear(1)
-    player1, player2 = get_players()
+    player1, player2 = menu()
     clear(1)
     size = board_size()
     player_1_placement_board = init_board(size)
