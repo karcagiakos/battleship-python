@@ -55,12 +55,27 @@ def get_players():
     return player1, player2
 
 
-def get_move():
+def get_move(board):
     # bekérni az inputot a felhasználótól
     # is_valid_input függvényt használni szabályos-e a lépés
     # átalakítani a betűket számmá, a visszaadott értékek 0-val kezdődjenek
     # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
-    pass
+    while True:
+        move = input("\nPlease give valid cooridantes:\n- ")
+        move = move.upper()
+        if move == "QUIT" or move == "EXIT":
+            print("Exit the game!")
+            sys.exit()
+        else:
+            if len(move) == 2 and move[0].isalpha() and move[1].isnumeric():
+                row = ord(move[0]) - 65
+                col = int(move[1]) - 1
+                if row > len(board)-1 or col > len(board)-1 or col == -1:
+                    print("\nOut of the board!\n")
+                    continue
+                return row, col
+            else:
+                print("\nNot valid!\n")
 
 
 def ai_move():
@@ -80,11 +95,15 @@ def is_valid_input():
     pass
 
 
-def placement_phase():
+def placement_phase(board):
     # player 1 kezd, leteszi a szabályoknak megfelelően az összes hajóját
     # player 2 következik
     # a hajók a placement boardokon tárolódnak
-    pass
+    print_board(board)
+    row, col = get_move(board)
+    mark(board, row, col)
+    clear(0.5)
+
 
 
 def shooting_phase():
@@ -96,11 +115,12 @@ def shooting_phase():
     pass
 
 
-def mark():
+def mark(board, row, col):
     # a játékos vagy az ai lépését felviszi a megfelelő játékos shooting boardjára
     # gyakorlatilag a visszakapott row, col értéket behelyetesíti a szabályoknak megfelelő betüvel
     # ellenőrzi, akár itt, akár egy külön függvényben, hogy egy hajó összes elemét megtalálták-e, ilyenkor elsüllyed
-    pass
+    if board[row][col] == "O":
+        board[row][col] = "X"
 
 
 def win_conditions():
@@ -122,9 +142,8 @@ def main():
     player_1_shooting_board = copy.deepcopy(player_1_placement_board)
     player_2_shooting_board = copy.deepcopy(player_1_placement_board)
     clear(1)
-    print_board(player_1_placement_board)
     while True:
-        placement_phase()
+        placement_phase(player_1_placement_board)
         shooting_phase()
         if win_conditions():  # ekkor van vége a játéknak
             return
