@@ -44,8 +44,16 @@ def print_board(board):
 
 
 def game_mode():
-    # human vs. human, ai vs. human, ai vs. ai
-    pass
+    possible_modes = [ "HUMAN-HUMAN", "HUMAN-AI", "AI-HUMAN", "AI-AI" ]
+    while True:
+        mode = int(input("Please choose game mode:\n 1: HUMAN-HUMAN\n 2: HUMAN-AI\n 3: AI-HUMAN\n 4: AI-AI\nType the number of your choice.\n"))
+        if mode not in range(1, len(possible_modes)+1):
+            print("Invalid input")
+            continue
+        else:
+            print(possible_modes[int(mode)-1])
+            return possible_modes[int(mode)-1]
+            
 
 
 def get_players():
@@ -55,13 +63,19 @@ def get_players():
     return player1, player2
 
 
+def change_player(player):
+    if player == player1:
+        pass
+    # minden körben más lép
+
+
 def get_move(board):
     # bekérni az inputot a felhasználótól
     # is_valid_input függvényt használni szabályos-e a lépés
     # átalakítani a betűket számmá, a visszaadott értékek 0-val kezdődjenek
     # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
     while True:
-        move = input("\nPlease give valid cooridantes:\n- ")
+        move = input("\nPlease give valid coordinates:\n- ")
         move = move.upper()
         if move == "QUIT" or move == "EXIT":
             print("Exit the game!")
@@ -76,6 +90,7 @@ def get_move(board):
                 return row, col
             else:
                 print("\nNot valid!\n")
+    # kiszervezni a validálást az is_valid függvénybe!
 
 
 def ai_move():
@@ -106,7 +121,11 @@ def placement_phase(board):
 
 
 
-def shooting_phase():
+def shooting_phase(board, row, col, player):
+    player = change_player(player)
+    board = [player_1_placement_board, player_2_placement_board]
+    row, col = get_move(board[i])
+    if 
     # player 1 kezd,
     # tippel, a szabályoknak megfelelően történik valami a shooting boardon
     # a shooting board kerül kiprintelésre, és a hajók felfedésére a mark függvénnyel
@@ -134,6 +153,7 @@ def main():
     clear(0)
     menu()
     clear(1)
+    game_mode()
     player1, player2 = get_players()
     clear(1)
     size = board_size()
@@ -151,3 +171,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
