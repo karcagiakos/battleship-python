@@ -166,18 +166,37 @@ def is_valid_input(board, move):
 
 
 def mark(board, row, col, orient, key, value, dict):
-    if board[row][col] == "🇴":
-        if orient == "H":
-            for i in range(value):
-                board[row][col+i] = "🇽"
-                coordinate = row, col+i
-                dict[key] += [coordinate]
-        elif orient == "V":
-            for i in range(value):
-                board[row+i][col] = "🇽"
-                coordinate = row+i, col
-                dict[key] += [coordinate]
-    return dict
+    while True:
+        try:
+            if board[row][col] == "🇴":
+                if orient == "H":
+                    for i in range(value):
+                        if col+value <= len(board):
+                            board[row][col+i] = "🇽"
+                            coordinate = row, col+i
+                            dict[key] += [coordinate]
+                        else:
+                            raise IndexError
+                elif orient == "V":
+                    for i in range(value):
+                        if row+value <= len(board):
+                            board[row+i][col] = "🇽"
+                            coordinate = row+i, col
+                            dict[key] += [coordinate]
+                        else:
+                            raise IndexError
+        except IndexError:
+            while True:
+                print("Rossz!")
+                move = get_move()
+                is_valid, row, col, orient = is_valid_input(board, move)
+                if not is_valid or not check_shot(row, col, dict, key, orient):
+                    continue
+                else:
+                    break
+            continue
+        return dict
+
 
 
 def win_conditions():
@@ -200,6 +219,7 @@ def placement_phase(board):
         dict = mark(board, row, col, orient, key, value, dict)
         clear(0)
     print_board(board)
+    print(dict)
 
 
 def check_shot(row, col, dict, key, orient):
