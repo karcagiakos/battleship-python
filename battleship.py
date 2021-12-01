@@ -1,17 +1,17 @@
 import time
 import os
 import string
-import copy
-import random
-import pygame
+# import copy
+# import random
+# import pygame
 
 
-pygame.init()
-pygame.font.init()
-pygame.mixer.init()
-s = "sound"
-music = pygame.mixer.music.load(os.path.join(s, "juppi.wav"))
-pygame.mixer.music.play(-1)
+# pygame.init()
+# pygame.font.init()
+# pygame.mixer.init()
+# s = "sound"
+# music = pygame.mixer.music.load(os.path.join(s, "juppi.wav"))
+# pygame.mixer.music.play(-1)
 
 
 def clear(s):
@@ -81,55 +81,57 @@ def get_move():
     return move
 
 
-# def ai_move():
-#     pass
-# already_shooted = []# contain all the shots
-# hit = False #False because we dont already hit a boat
-# def AI_okos(move):
-#     move = random.randint(0, 99)
-#     if check_shot(move):
-#         already_shooted.append(move)
+def ai_move():
+    pass
+    # already_shooted = []# contain all the shots
+    # hit = False #False because we dont already hit a boat
+    # def AI_okos(move):
+    #     move = random.randint(0, 99)
+    #     if check_shot(move):
+    #         already_shooted.append(move)
 
-#         if shooting_board[move] == 1:
-#             change_shot(move)
-#             hit = True
-#             i = 1
-#             nextshot = move + i
+    #         if shooting_board[move] == 1:
+    #             change_shot(move)
+    #             hit = True
+    #             i = 1
+    #             nextshot = move + i
 
-#         if shooting_board[nextshot] == 0:  #left --  1 coordinata 2 számból, 0-t board szél, 0-tól board magasság
-#             i = 1
-#             nextshot = shot - 1
-#             if board_player_init[nextshot] == 1:
-#                 change_shot(nextshot)
-#                 i = i + 1
-#                 nextshot = shot - i
+    #         if shooting_board[nextshot] == 0:  #left --  1 coordinata 2 számból, 0-t board szél, 0-tól board magasság
+    #             i = 1
+    #             nextshot = shot - 1
+    #             if board_player_init[nextshot] == 1:
+    #                 change_shot(nextshot)
+    #                 i = i + 1
+    #                 nextshot = shot - i
 
-#         elif shooting_board[nextshot] == 1:  #right
-#             change_shot(nextshot)
-#             i = i + 1
-#             nextshot = shot + i
+    #         elif shooting_board[nextshot] == 1:  #right
+    #             change_shot(nextshot)
+    #             i = i + 1
+    #             nextshot = shot + i
 
-#         elif shooting_board[nextshot] == 0:
-#             i = 1
-#             nextshot = shot + 10
-#             if shooting_board[nextshot] == 1:
-#                 change_shot(nextshot)
-#                 i = i + 10
-#                 nextshot = shot + i
-#         elif shooting_board[nextshot] == 0: #up
-#                 i = 1
-#                 nextshot = shot - 10
-#                 if shooting_board[nextshot] == 1:
-#                     change_shot(nextshot)
-#                     i = i + 10
-#                     nextshot = shot - i
-#     pass
+    #         elif shooting_board[nextshot] == 0:
+    #             i = 1
+    #             nextshot = shot + 10
+    #             if shooting_board[nextshot] == 1:
+    #                 change_shot(nextshot)
+    #                 i = i + 10
+    #                 nextshot = shot + i
+    #         elif shooting_board[nextshot] == 0: #up
+    #                 i = 1
+    #                 nextshot = shot - 10
+    #                 if shooting_board[nextshot] == 1:
+    #                     change_shot(nextshot)
+    #                     i = i + 10
+    #                     nextshot = shot - i
+    #     pass
 
-# def AI_béla(): # just a simple IA, kéne egy ciklus hogy ha nem valid a lövés akkor generáljon újat amíg nincs valid hely
-#     shot = random.randint(0, 99)
-#     if check_shot(shot):
-#         already_shooted.append(shot)
-#         pass
+
+def AI_béla():
+    pass
+    #     shot = random.randint(0, 99)
+    #     if check_shot(shot):
+    #         already_shooted.append(shot)
+    #         pass
 
 
 def is_valid_input(board, move):
@@ -150,7 +152,7 @@ def is_valid_input(board, move):
     elif len(move) == 4:
         if move[0].isalpha() and move[1].isnumeric() and move[2].isnumeric() and move[3].isalpha():
             row = ord(move[0]) - 65
-            col = int(int(str(move[1]) + str(move[2])) ) - 1
+            col = int(int(str(move[1]) + str(move[2]))) - 1
             orient = move[3]
             if row > len(board)-1 or col > len(board)-1 or col == -1 or orient != "H" and orient != "V":
                 print("Invalid input! Try again!")
@@ -192,19 +194,13 @@ def placement_phase(board):
             move = get_move()
             is_valid, row, col, orient = is_valid_input(board, move)
             clear(1)
-            if is_valid == False or check_shot(row, col, dict) == False:
+            if not is_valid or not check_shot(row, col, dict):
                 continue
-            # while is_valid == True and (is_valid == False or check_shot(row, col, dict) == False):
-                # move = get_move()
-                # is_valid, row, col, orient = is_valid_input(board, move)
-                # print("whileban van!")
             else:
                 break
         dict = mark(board, row, col, orient, key, value, dict)
         clear(0)
     print_board(board)
-    
-
 
 
 def check_shot(row, col, dict):
@@ -216,45 +212,43 @@ def check_shot(row, col, dict):
                 return False
     print("jó")
     return True
-
     # if x in dict.values():
     #     print("Rossz!")
     #     return False
     # print("Jó")
     # return True
-
-
-
     # for i in range(len(dict)):
     #     if already_shooted[i] == move:
     #         return False
     #     return True
 
+
 def shooting_phase():
     pass
-#     def shooting_phase(player_1,player_1_placement_board):
-#     board = player_1_placement_board 
-#     player = player_1 #change_player(player)
-#     move = get_move()
-#     # board = [player_1_placement_board, player_2_placement_board] #change_board():
-#     is_valid, row, col = is_valid_input(board, move)
-#     if  board[row][col] != "🇽":
-#         print("Missed!")
-#         check_shot
-#         change_shot(move)
-#         print(board)
-#     elif board[row][col] == "🇽":
-#         print("Hit")
-#         # if board[row+1][col] == "🇽":
-#         #     return False
-#         # elif board[row+1][col+1] == "🇽":
-#         pass
+    #     def shooting_phase(player_1,player_1_placement_board):
+    #     board = player_1_placement_board
+    #     player = player_1 #change_player(player)
+    #     move = get_move()
+    #     # board = [player_1_placement_board, player_2_placement_board] #change_board():
+    #     is_valid, row, col = is_valid_input(board, move)
+    #     if  board[row][col] != "🇽":
+    #         print("Missed!")
+    #         check_shot
+    #         change_shot(move)
+    #         print(board)
+    #     elif board[row][col] == "🇽":
+    #         print("Hit")
+    #         # if board[row+1][col] == "🇽":
+    #         #     return False
+    #         # elif board[row+1][col+1] == "🇽":
+    #         pass
 
 
-# def change_shot(move):
-#     del board_player_init[move]
-#     board_player_init.insert(move, "🇽")
-#     board[row][col] = "🇲"
+def change_shot(move):
+    pass
+    #     del board_player_init[move]
+    #     board_player_init.insert(move, "🇽")
+    #     board[row][col] = "🇲"
 
 
 def main():
