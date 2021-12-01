@@ -190,13 +190,12 @@ def mark(board, row, col, orient, key, value, dict):
                 print("Rossz!")
                 move = get_move()
                 is_valid, row, col, orient = is_valid_input(board, move)
-                if not is_valid or not check_shot(row, col, dict, key, orient):
+                if not is_valid or not check_shot(row, col, dict, key, orient, board):
                     continue
                 else:
                     break
             continue
         return dict
-
 
 
 def win_conditions():
@@ -212,7 +211,7 @@ def placement_phase(board):
             move = get_move()
             is_valid, row, col, orient = is_valid_input(board, move)
             clear(1)
-            if not is_valid or not check_shot(row, col, dict, key, orient):
+            if not is_valid or not check_shot(row, col, dict, key, orient, board):
                 continue
             else:
                 break
@@ -222,7 +221,7 @@ def placement_phase(board):
     print(dict)
 
 
-def check_shot(row, col, dict, key, orient):
+def check_shot(row, col, dict, key, orient, board):
     if key == "Big":
         if orient == "H":
             for i in dict.values():
@@ -244,7 +243,7 @@ def check_shot(row, col, dict, key, orient):
         if orient == "H":
             for i in dict.values():
                 for y in range(len(i)):
-                    if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) == i[y]:
+                    if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) == i[y] or board[row][col+3] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row+1][col+2] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽" or board[row-1][col+2] == "🇽":
                         print("rossz")
                         return False
             print("jó")
@@ -252,7 +251,7 @@ def check_shot(row, col, dict, key, orient):
         elif orient == "V":
             for i in dict.values():
                 for y in range(len(i)):
-                    if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y]:
+                    if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y] or board[row+3][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row+2][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row-1][col-1] == "🇽" or board[row-2][col-1] == "🇽":
                         print("rossz")
                         return False
             print("jó")
@@ -261,7 +260,7 @@ def check_shot(row, col, dict, key, orient):
         if orient == "H":
             for i in dict.values():
                 for y in range(len(i)):
-                    if (row, col) == i[y] or (row, col+1) == i[y]:
+                    if (row, col) == i[y] or (row, col+1) == i[y] or board[row][col+2] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽":
                         print("rossz")
                         return False
             print("jó")
@@ -269,7 +268,8 @@ def check_shot(row, col, dict, key, orient):
         elif orient == "V":
             for i in dict.values():
                 for y in range(len(i)):
-                    if (row, col) == i[y] or (row+1, col) == i[y]:
+                    if (row, col) == i[y] or (row+1, col) == i[y] or board[row+2][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col-1] == "🇽":
+
                         print("rossz")
                         return False
             print("jó")
