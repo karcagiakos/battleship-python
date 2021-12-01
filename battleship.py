@@ -182,6 +182,7 @@ def mark(board, row, col, orient, key, value, dict):
 def win_conditions():
     pass
 
+
 def placement_phase(board):
     ships = {"Big": 4, "Medium": 3, "Small": 2}
     dict = {"Big": [], "Medium": [], "Small": []}
@@ -191,21 +192,43 @@ def placement_phase(board):
             move = get_move()
             is_valid, row, col, orient = is_valid_input(board, move)
             clear(1)
-            if is_valid:
+            if is_valid == False or check_shot(row, col, dict) == False:
+                continue
+            # while is_valid == True and (is_valid == False or check_shot(row, col, dict) == False):
+                # move = get_move()
+                # is_valid, row, col, orient = is_valid_input(board, move)
+                # print("whileban van!")
+            else:
                 break
         dict = mark(board, row, col, orient, key, value, dict)
         clear(0)
     print_board(board)
-    print(dict)
+    
 
 
 
-def check_shot(move):#check if the shot has not already been fired
-    pass
-#     for i in range(len(already_shooted)):
-#         if already_shooted[i] == move:
-#             return False
-#         return True
+def check_shot(row, col, dict):
+    x = (row, col)
+    for i in dict.values():
+        for y in range(len(i)):
+            if x == i[y]:
+                print("rossz")
+                return False
+    print("jó")
+    return True
+
+    # if x in dict.values():
+    #     print("Rossz!")
+    #     return False
+    # print("Jó")
+    # return True
+
+
+
+    # for i in range(len(dict)):
+    #     if already_shooted[i] == move:
+    #         return False
+    #     return True
 
 def shooting_phase():
     pass
