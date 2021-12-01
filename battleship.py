@@ -193,7 +193,7 @@ def placement_phase(board):
             move = get_move()
             is_valid, row, col, orient = is_valid_input(board, move)
             clear(1)
-            if not is_valid or not check_shot(row, col, dict):
+            if not is_valid or not check_shot(row, col, dict, key, value, orient):
                 continue
             else:
                 break
@@ -202,20 +202,29 @@ def placement_phase(board):
     print_board(board)
 
 
-def check_shot(row, col, dict):
-    x = (row, col)
-    for i in dict.values():
-        for y in range(len(i)):
-            if x == i[y]:
-                print("rossz")
-                return False
-    print("jó")
-    return True
+def check_shot(row, col, dict, key, value, orient):
+    if orient == "H":
+        # x = (row, col)
+        for i in dict.values():
+            for y in range(len(i)):
+                if (row, col) == i[y]:
+                    print("rossz")
+                    return False
+        print("jó")
+        return True
+    elif orient == "V":
+        # x = (row, col)
+        for i in dict.values():
+            for y in range(len(i)):
+                if (row, col) == i[y]:
+                    print("rossz")
+                    return False
+        print("jó")
+        return True
 
 
 def shooting_phase():
     pass
-    #     def shooting_phase(player_1,player_1_placement_board):
     #     board = player_1_placement_board
     #     player = player_1 #change_player(player)
     #     move = get_move()
