@@ -164,25 +164,28 @@ def is_valid_input(board, move):
         return False, 0, 0, 0
 
 
-def mark(board, row, col, orient, value):
+def mark(board, row, col, orient, key, value, dict):
     if board[row][col] == "🇴":
         if orient == "H":
             for i in range(value):
                 board[row][col+i] = "🇽"
+                coordinate = row, col+i
+                dict[key] += [coordinate]
         elif orient == "V":
             for i in range(value):
                 board[row+i][col] = "🇽"
-    
-    dict = {big: [], medium: [], small: []}
+                coordinate = row+i, col
+                dict[key] += [coordinate]
+    return dict
 
 
 def win_conditions():
     pass
 
-
 def placement_phase(board):
     ships = {"Big": 4, "Medium": 3, "Small": 2}
-    for value in ships.values():
+    dict = {"Big": [], "Medium": [], "Small": []}
+    for key, value in ships.items():
         while True:
             print_board(board)
             move = get_move()
@@ -190,9 +193,10 @@ def placement_phase(board):
             clear(1)
             if is_valid:
                 break
-        mark(board, row, col, orient, value)
+        dict = mark(board, row, col, orient, key, value, dict)
         clear(0)
     print_board(board)
+    print(dict)
 
 
 
