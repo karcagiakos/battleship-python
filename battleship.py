@@ -122,7 +122,17 @@ def placement_phase(board):
     clear(0)
 
 
-def shooting_phase():
+
+def shooting_phase(board, row, col, player):
+    player = change_player(player)
+    move = get_move()
+    board = [player_1_placement_board, player_2_placement_board]
+    is_valid, row, col = is_valid_input(board, move)
+    # player 1 kezd,
+    # tippel, a szabályoknak megfelelően történik valami a shooting boardon
+    # a shooting board kerül kiprintelésre, és a hajók felfedésére a mark függvénnyel
+    # körök vannak, player 2 második kör, és így tovább
+    # win conditions ellenőrzi, hogy nyer-e valaki
     pass
 
 
