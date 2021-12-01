@@ -193,7 +193,7 @@ def placement_phase(board):
             move = get_move()
             is_valid, row, col, orient = is_valid_input(board, move)
             clear(1)
-            if not is_valid or not check_shot(row, col, dict, key, value, orient):
+            if not is_valid or not check_shot(row, col, dict, key, orient):
                 continue
             else:
                 break
@@ -202,29 +202,63 @@ def placement_phase(board):
     print_board(board)
 
 
-def check_shot(row, col, dict, key, value, orient):
-    if orient == "H":
-        # x = (row, col)
-        for i in dict.values():
-            for y in range(len(i)):
-                if (row, col) == i[y]:
-                    print("rossz")
-                    return False
-        print("jó")
-        return True
-    elif orient == "V":
-        # x = (row, col)
-        for i in dict.values():
-            for y in range(len(i)):
-                if (row, col) == i[y]:
-                    print("rossz")
-                    return False
-        print("jó")
-        return True
+def check_shot(row, col, dict, key, orient):
+    if key == "Big":
+        if orient == "H":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) or (row, col+3) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+        elif orient == "V":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) or (row+3, col) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+    elif key == "Medium":
+        if orient == "H":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+        elif orient == "V":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+    elif key == "Small":
+        if orient == "H":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row, col+1) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+        elif orient == "V":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row+1, col) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
 
 
 def shooting_phase():
     pass
+    #     def shooting_phase(player_1,player_1_placement_board):
     #     board = player_1_placement_board
     #     player = player_1 #change_player(player)
     #     move = get_move()
