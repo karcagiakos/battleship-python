@@ -148,7 +148,6 @@ def is_valid_input(board, move):
         else:
             print("Invalid input! Try again!")
             return False, 0, 0, 0
-
     elif len(move) == 4:
         if move[0].isalpha() and move[1].isnumeric() and move[2].isnumeric() and move[3].isalpha():
             row = ord(move[0]) - 65
@@ -212,15 +211,6 @@ def check_shot(row, col, dict):
                 return False
     print("jó")
     return True
-    # if x in dict.values():
-    #     print("Rossz!")
-    #     return False
-    # print("Jó")
-    # return True
-    # for i in range(len(dict)):
-    #     if already_shooted[i] == move:
-    #         return False
-    #     return True
 
 
 def shooting_phase():
