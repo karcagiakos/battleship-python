@@ -77,28 +77,34 @@ def ai_move():
 
 def is_valid_input(board, move):
     move = move.upper()
-    if len(move) == 2:
-        if move[0].isalpha() and move[1].isnumeric():
+    if len(move) == 3:
+        if move[0].isalpha() and move[1].isnumeric() and move[2].isalpha():
             row = ord(move[0]) - 65
             col = int(move[1]) - 1
-            if row > len(board)-1 or col > len(board)-1 or col == -1:
+            orient = move[2]
+            if row > len(board)-1 or col > len(board)-1 or col == -1 or orient != "H" and orient != "V":
                 print("Invalid input! Try again!")
-                return False, 0, 0
-            return True, row, col
+                return False, 0, 0, 0
+            return True, row, col, orient
         else:
             print("Invalid input! Try again!")
-            return False, 0, 0
-    elif len(move) == 3:
-        if move[0].isalpha() and move[1].isnumeric() and move[2].isnumeric():
+            return False, 0, 0, 0
+
+    elif len(move) == 4:
+        if move[0].isalpha() and move[1].isnumeric() and move[2].isnumeric() and move[3].isalpha():
             row = ord(move[0]) - 65
             col = int(int(str(move[1]) + str(move[2])) ) - 1
-            if row > len(board)-1 or col > len(board)-1 or col == -1:
+            orient = move[3]
+            if row > len(board)-1 or col > len(board)-1 or col == -1 or orient != "H" and orient != "V":
                 print("Invalid input! Try again!")
-                return False, 0, 0
-            return True, row, col
+                return False, 0, 0, 0
+            return True, row, col, orient
         else:
             print("Invalid input! Try again!")
-            return False, 0, 0
+            return False, 0, 0, 0
+    else:
+        print("Invalid input! Try again!")
+        return False, 0, 0, 0
 
 
 def mark(board, row, col):
@@ -111,15 +117,25 @@ def win_conditions():
 
 
 def placement_phase(board):
+    ships = {"Big": 4, "Medium": 3, "Small": 2}
+    # először big, majd medium, majd small, mindig megkérdezi hova, milyen koordinátával
     while True:
         print_board(board)
         move = get_move()
-        is_valid, row, col = is_valid_input(board, move)
+        is_valid, row, col, orient = is_valid_input(board, move)
         clear(1)
+        print(orient)
         if is_valid:
             break
     mark(board, row, col)
     clear(0)
+
+
+def check_shot(shot):#check if the shot has not already been fired
+    for i in range(len(previous_shots)):
+        if previous_shots[i] == shot:
+            return False
+    return True
 
 
 def shooting_phase():
