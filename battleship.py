@@ -479,6 +479,8 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess
     if len(big) + len(medium) + len(small) == 9:
         return True, player2
 
+    return False, player1
+
 
 def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2):
     if player == player1:
@@ -513,9 +515,10 @@ def main():
     guesses1 = []
     guesses2 = []
     while True:
-        if shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2, guesses1, guesses2):
+        end, player = shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2, guesses1, guesses2)
+        if end:
             break
-    print("vége ")
+    print(f"vége {player} nyert ")
 
 
 if __name__ == "__main__":
