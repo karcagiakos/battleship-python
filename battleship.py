@@ -5,19 +5,7 @@ import copy
 # import random
 # import pygame
 
-# print("""
-#     ██   ██ ██ ████████      ██████  ██████      ███    ███ ██ ███████ ███████ 
-#     ██   ██ ██    ██        ██    ██ ██   ██     ████  ████ ██ ██      ██      
-#     ███████ ██    ██        ██    ██ ██████      ██ ████ ██ ██ ███████ ███████ 
-#     ██   ██ ██    ██        ██    ██ ██   ██     ██  ██  ██ ██      ██      ██ 
-#     ██   ██ ██    ██         ██████  ██   ██     ██      ██ ██ ███████ ███████""")
-# clear(3)
-# print("""
-#        _    _
-#      __|_|__|_|__
-#    _|____________|__
-#   |o o o o o o o o /  
-# ~'`~'`~'`~'`~'`~'`~'`~""")
+
 # pygame.init()
 # pygame.font.init()
 # pygame.mixer.init()
@@ -34,6 +22,25 @@ def clear(s):
 def menu():
     print("Welcome to Battleship! You will sink! 🚢")
     clear(1)
+    # print("""
+    #     ██   ██ ██ ████████      ██████  ██████      ███    ███ ██ ███████ ███████ 
+    #     ██   ██ ██    ██        ██    ██ ██   ██     ████  ████ ██ ██      ██      
+    #     ███████ ██    ██        ██    ██ ██████      ██ ████ ██ ██ ███████ ███████ 
+    #     ██   ██ ██    ██        ██    ██ ██   ██     ██  ██  ██ ██      ██      ██ 
+    #     ██   ██ ██    ██         ██████  ██   ██     ██      ██ ██ ███████ ███████""")
+    # clear(3)
+    # print("""
+    #                                     # #  ( )
+    #                                 ___#_#___|__
+    #                             _  |____________|  _
+    #                     _=====| | |            | | |==== _
+    #                 =====| |.---------------------------. | |====
+    # <--------------------'   .  .  .  .  .  .  .  .   '-----------------/
+    #     \                                                                /
+    #     \_______________________________________________VIVÁZS_________/
+    # wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    # wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    # wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww""")
     mode = game_mode()
     clear(1)
     player1, player2 = players(mode)
@@ -307,17 +314,25 @@ def can_shoot(move, hits_list, board): # Ellenőrzi, hogy a lövés valid helyre
             if move[0].isalpha() and move[1].isnumeric() and int(move[1]) <= len(board):
                 row = ord(move[0]) - 65
                 col = int(move[1]) - 1
-                if (row, col) in hits_list:
+                if ((row, col) in hits_list) or row > len(board)-1 or col > len(board) or col < 0:
                     print("rossz")
                     return False, 0, 0
                 return True, row, col
+            print("rossz")
+            return False, 0, 0
         elif len(move) == 3:
             if move[0].isalpha() and move[1:].isnumeric() and int(move[1:]) <= len(board):
                 row = ord(move[0]) - 65
                 col = int(move[1:]) - 1
-                if (row, col) in hits_list:
+                if ((row, col) in hits_list) or row > len(board)-1 or col > len(board) or col < 0:
+                    print("rossz")
                     return False, 0, 0
                 return True, row, col
+            print("rossz")
+            return False, 0, 0
+        else:
+            print("rossz")
+            return False, 0, 0
 
     
 def placement_phase(board1, board2, player1, player2):
@@ -422,7 +437,6 @@ def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2
                     return
                 else:
                     board1[row][col] = "🇲"
-            
 
 
 def main():
