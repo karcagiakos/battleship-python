@@ -12,7 +12,12 @@ import copy
 #     ██   ██ ██    ██        ██    ██ ██   ██     ██  ██  ██ ██      ██      ██ 
 #     ██   ██ ██    ██         ██████  ██   ██     ██      ██ ██ ███████ ███████""")
 # clear(3)
-
+# print("""
+#        _    _
+#      __|_|__|_|__
+#    _|____________|__
+#   |o o o o o o o o /  
+# ~'`~'`~'`~'`~'`~'`~'`~""")
 # pygame.init()
 # pygame.font.init()
 # pygame.mixer.init()
@@ -27,7 +32,7 @@ def clear(s):
 
 
 def menu():
-    print("Welcome to Battleship! You will sink!")
+    print("Welcome to Battleship! You will sink! 🚢")
     clear(1)
     mode = game_mode()
     clear(1)
@@ -364,6 +369,7 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
     player = player1
     guesses1 = []
     guesses2 = []
+
     while player == player1:
         clear(1)
         print_board(board2)
@@ -379,6 +385,24 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
     change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2)
     clear(1)
     print_board(board2)
+    player = change_player(player, player1, player2)
+
+    while player == player2:
+        clear(1)
+        print_board(board1)
+        move = get_move()
+        valid, row, col = can_shoot(move, guesses1, board1)
+        if valid == False:
+            continue
+        else:
+            break
+    for key, value in dict1.items():
+        if (row, col) in value:
+            guesses2.append((row, col))
+    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2)
+    clear(1)
+    print_board(board1)
+    change_player(player, player1, player2)
 
 
 def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2):
@@ -390,7 +414,15 @@ def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2
                     return
                 else:
                     board2[row][col] = "🇲"
-                    
+    elif player == player2:
+        for value in dict1.values():
+            for tupl in value:
+                if (row, col) == tupl:
+                    board1[row][col] = "🇭"
+                    return
+                else:
+                    board1[row][col] = "🇲"
+            
 
 
 def main():
