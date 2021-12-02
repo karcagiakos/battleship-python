@@ -416,11 +416,11 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess
         for i in big:
             row, col = i
             board2[row][col] = "🇸"
-    elif len(medium) == 3:
+    if len(medium) == 3:
         for i in medium:
             row, col = i
             board2[row][col] = "🇸"
-    elif len(small) == 2:
+    if len(small) == 2:
         for i in small:
             row, col = i
             board2[row][col] = "🇸"
@@ -444,6 +444,36 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess
         if (row, col) in value:
             guess2.append((row, col))
     change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2)
+
+    big = []
+    medium = []
+    small = []
+    for i in guess2:
+        for value in dict1.values():
+            if len(value) == 4:
+                if i in value:
+                    big.append(i)
+            elif len(value) == 3:
+                if i in value:
+                    medium.append(i)
+            elif len(value) == 2:
+                if i in value:
+                    small.append(i)
+    
+
+    if len(big) == 4:
+        for i in big:
+            row, col = i
+            board1[row][col] = "🇸"
+    if len(medium) == 3:
+        for i in medium:
+            row, col = i
+            board1[row][col] = "🇸"
+    if len(small) == 2:
+        for i in small:
+            row, col = i
+            board1[row][col] = "🇸"
+
     clear(1)
     print(guess2)
     print_board(board1)
