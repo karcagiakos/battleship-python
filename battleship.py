@@ -5,6 +5,13 @@ import copy
 # import random
 # import pygame
 
+# print("""
+#     ██   ██ ██ ████████      ██████  ██████      ███    ███ ██ ███████ ███████ 
+#     ██   ██ ██    ██        ██    ██ ██   ██     ████  ████ ██ ██      ██      
+#     ███████ ██    ██        ██    ██ ██████      ██ ████ ██ ██ ███████ ███████ 
+#     ██   ██ ██    ██        ██    ██ ██   ██     ██  ██  ██ ██      ██      ██ 
+#     ██   ██ ██    ██         ██████  ██   ██     ██      ██ ██ ███████ ███████""")
+# clear(3)
 
 # pygame.init()
 # pygame.font.init()
@@ -370,7 +377,7 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
     for key, value in dict2.items():
         if (row, col) in value:
             guesses1.append((row, col))
-    board2 = change_shot(row, col, board2)
+    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2)
     clear(1)
     print_board(board2)
 
@@ -403,12 +410,34 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
     #     pass
 
 
-def change_shot(row, col, board):
-    if board[row][col] == "🇴":
-        board[row][col] == "🇲"
-    elif board[row][col] == "🇽":
-        board[row][col] == "🇭"
-    return board
+def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2):
+    if player == player1:
+        for value in dict2.values():
+            for tupl in value:
+                if (row, col) == tupl:
+                    board2[row][col] = "🇭"
+                    return
+                else:
+                    board2[row][col] = "🇲"
+                    return
+
+        # if (row, col) in dict2.values():
+        #     board2[row][col] = "🇭"
+        # elif (row, col) not in dict2.values():
+        #     board2[row][col] = "🇲"
+    #hit or miss?
+
+
+    #     elif board[row][col] == "🇽":
+    #         board[row][col] = "🇭"
+    #     return board
+
+
+    # for key, value in dict2.items():
+    #     if (row, col) in value:
+    #         guesses1.append((row, col))
+
+
 
 
     #     del board_player_init[move]
