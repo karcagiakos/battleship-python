@@ -241,37 +241,60 @@ def check_shot(row, col, dict, key, orient, board):
             return True
     elif key == "Medium":
         if orient == "H":
-            for i in dict.values():
-                for y in range(len(i)):
-                    if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) == i[y] or board[row][col+3] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row+1][col+2] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽" or board[row-1][col+2] == "🇽":
-                        print("rossz")
-                        return False
+            try:
+                for i in dict.values():
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) == i[y] or board[row][col+3] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row+1][col+2] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽" or board[row-1][col+2] == "🇽":
+                            print("rossz")
+                            return False
+            except IndexError:
+                if col+3 <= len(board):
+                    return True
+                print("rossz")
+                return False
             print("jó")
             return True
         elif orient == "V":
-            for i in dict.values():
-                for y in range(len(i)):
-                    if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y] or board[row+3][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row+2][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row-1][col-1] == "🇽" or board[row-2][col-1] == "🇽":
-                        print("rossz")
-                        return False
+            try:
+                for i in dict.values():
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y] or board[row+3][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row+2][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row-1][col-1] == "🇽" or board[row-2][col-1] == "🇽":
+                            print("rossz")
+                            return False
+            except IndexError:
+                if row+3 <= len(board):
+                    return True
+                print("rossz")
+                return False
             print("jó")
             return True
     elif key == "Small":
         if orient == "H":
-            for i in dict.values():
-                for y in range(len(i)):
-                    if (row, col) == i[y] or (row, col+1) == i[y] or board[row][col+2] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽":
-                        print("rossz")
-                        return False
+            try:
+                for i in dict.values():
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row, col+1) == i[y] or board[row][col+2] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽":
+                            print("rossz")
+                            return False
+            except IndexError:
+                if col+2 <= len(board):
+                    return True
+                print("rossz")
+                return False
             print("jó")
             return True
         elif orient == "V":
             for i in dict.values():
-                for y in range(len(i)):
-                    if (row, col) == i[y] or (row+1, col) == i[y] or board[row+2][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col-1] == "🇽":
-
-                        print("rossz")
-                        return False
+                try:
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row+1, col) == i[y] or board[row+2][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col-1] == "🇽":
+                            print("rossz")
+                            return False
+                except IndexError:
+                    if row+2 <= len(board):
+                        return True
+                    print("rossz")
+                    return False
             print("jó")
             return True
 
