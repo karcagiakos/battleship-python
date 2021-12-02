@@ -2,6 +2,16 @@ import time
 import os
 import string
 import copy
+# import random
+# import pygame
+
+
+# pygame.init()
+# pygame.font.init()
+# pygame.mixer.init()
+# s = "sound"
+# music = pygame.mixer.music.load(os.path.join(s, "juppi.wav"))
+# pygame.mixer.music.play(-1)
 
 
 def clear(s):
@@ -10,29 +20,50 @@ def clear(s):
 
 
 def menu():
-    print("Welcome to Battleship!")
+    print("Welcome to Battleship! You will sink! 🚢")
+    clear(1)
+    # print("""
+    #     ██   ██ ██ ████████      ██████  ██████      ███    ███ ██ ███████ ███████ 
+    #     ██   ██ ██    ██        ██    ██ ██   ██     ████  ████ ██ ██      ██      
+    #     ███████ ██    ██        ██    ██ ██████      ██ ████ ██ ██ ███████ ███████ 
+    #     ██   ██ ██    ██        ██    ██ ██   ██     ██  ██  ██ ██      ██      ██ 
+    #     ██   ██ ██    ██         ██████  ██   ██     ██      ██ ██ ███████ ███████""")
+    # clear(3)
+    # print("""
+    #                                     # #  ( )
+    #                                 ___#_#___|__
+    #                             _  |____________|  _
+    #                     _=====| | |            | | |==== _
+    #                 =====| |.---------------------------. | |====
+    # <--------------------'   .  .  .  .  .  .  .  .   '-----------------/
+    #     \                                                                /
+    #     \_______________________________________________VIVÁZS_________/
+    # wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    # wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    # wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww""")
+    mode = game_mode()
+    clear(1)
+    player1, player2 = players(mode)
+    return player1, player2
 
 
 def board_size():
-    clear(0)
-    size = input("Board size: (X * X size)\n\n- ")
     while True:
-        if size.isnumeric():
-            print("\nLoading board size...")
+        size = input("Board size: \n- ")
+        if size.isnumeric() and int(size) < 11 and int(size) > 0:
             return int(size)
-        else:
-            print("\nLoading default board size...")
-            return 5
+        print("Invalid input! Try again!")
+        clear(1)
 
 
 def init_board(size=5):
-    board = [["O"] * size for i in range(size)]
+    board = [["🇴"] * size for i in range(size)]
     return board
 
 
 def print_board(board):
     alphabet = list(string.ascii_uppercase)
-    line = "   "
+    line = "    "
     for letter in range(len(board[0])):
         line += str(letter+1) + "  "
     print(line+"\n")
@@ -44,97 +75,435 @@ def print_board(board):
 
 
 def game_mode():
-    # human vs. human, ai vs. human, ai vs. ai
-    pass
+    while True:
+        print("1. Single player")
+        print("2. Multiplayer")
+        mode = input("- ")
+        if mode.isnumeric() and int(mode) < 3 and int(mode) > 0:
+            return int(mode)
+        print("Invalid input! Try again!")
+        clear(1)
 
 
-def get_players():
-    # game mode alapján, ha van ai, random nevet adni neki
-    player1 = input("Enter your name:\n- ")
-    player2 = input("Enter your name:\n- ")
+def change_player(player, player1, player2):
+    if player == player1:
+        player = player2
+    else:
+        player = player1
+    return player
+
+
+def players(mode):
+    if mode == 1:
+        player1 = input("Enter your name:\n- ")
+        player2 = "AI"
+    else:
+        player1 = input("Enter Player 1 name:\n- ")
+        player2 = input("Enter Player 2 name:\n- ")
     return player1, player2
 
 
-def get_move(board):
-    # bekérni az inputot a felhasználótól
-    # is_valid_input függvényt használni szabályos-e a lépés
-    # átalakítani a betűket számmá, a visszaadott értékek 0-val kezdődjenek
-    # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
-    while True:
-        move = input("\nPlease give valid cooridantes:\n- ")
-        move = move.upper()
-        if move == "QUIT" or move == "EXIT":
-            print("Exit the game!")
-            sys.exit()
-        else:
-            if len(move) == 2 and move[0].isalpha() and move[1].isnumeric():
-                row = ord(move[0]) - 65
-                col = int(move[1]) - 1
-                if row > len(board)-1 or col > len(board)-1 or col == -1:
-                    print("\nOut of the board!\n")
-                    continue
-                return row, col
-            else:
-                print("\nNot valid!\n")
+def get_move():
+    move = input("\nPlease give valid coordinates:\n- ")
+    return move
 
 
 def ai_move():
-    # random lépések szabályoknak megfelelően
-    # később lépések az alapján, hogy hova érdemes inkább lépni
-    # ha lehetséges, ez a függvény legyen felhasználható placement és shooting phase alatt is
     pass
+    # hit = False #False because we dont already hit a boat
+    # def AI_okos(move):
+    #     move = random.randint(0, 99)
+    #     if check_shot(move):
+    #         already_shooted.append(move)
+
+    #         if shooting_board[move] == 1:
+    #             change_shot(move)
+    #             hit = True
+    #             i = 1
+    #             nextshot = move + i
+
+    #         if shooting_board[nextshot] == 0:  #left --  1 coordinata 2 számból, 0-t board szél, 0-tól board magasság
+    #             i = 1
+    #             nextshot = shot - 1
+    #             if board_player_init[nextshot] == 1:
+    #                 change_shot(nextshot)
+    #                 i = i + 1
+    #                 nextshot = shot - i
+
+    #         elif shooting_board[nextshot] == 1:  #right
+    #             change_shot(nextshot)
+    #             i = i + 1
+    #             nextshot = shot + i
+
+    #         elif shooting_board[nextshot] == 0:
+    #             i = 1
+    #             nextshot = shot + 10
+    #             if shooting_board[nextshot] == 1:
+    #                 change_shot(nextshot)
+    #                 i = i + 10
+    #                 nextshot = shot + i
+    #         elif shooting_board[nextshot] == 0: #up
+    #                 i = 1
+    #                 nextshot = shot - 10
+    #                 if shooting_board[nextshot] == 1:
+    #                     change_shot(nextshot)
+    #                     i = i + 10
+    #                     nextshot = shot - i
+    #     pass
 
 
-def is_valid_input():
-    # ellenőrzi, phase-nek megfelelően, hogy az adott lépés, amit a felhasználó megad a get_move-ban, szabályos-e
-    # szabályoknak megfelel
-    # nincs kint a tábla határain
-    # először egy betű, majd egy szám
-    # nem foglalt-e már placement phase alatt az a hely
-    # stb
+def AI_béla():
     pass
+    #     shot = random.randint(0, 99)
+    #     if check_shot(shot):
+    #         already_shooted.append(shot)
+    #         pass
 
 
-def placement_phase(board):
-    # player 1 kezd, leteszi a szabályoknak megfelelően az összes hajóját
-    # player 2 következik
-    # a hajók a placement boardokon tárolódnak
-    print_board(board)
-    row, col = get_move(board)
-    mark(board, row, col)
-    clear(0.5)
+def is_valid_input(board, move):
+    move = move.upper()
+    if len(move) == 3:
+        if move[0].isalpha() and move[1].isnumeric() and move[2].isalpha():
+            row = ord(move[0]) - 65
+            col = int(move[1]) - 1
+            orient = move[2]
+            if row > len(board)-1 or col > len(board)-1 or col == -1 or orient != "H" and orient != "V":
+                print("Invalid input! Try again!")
+                return False, 0, 0, 0
+            return True, row, col, orient
+        else:
+            print("Invalid input! Try again!")
+            return False, 0, 0, 0
+    elif len(move) == 4:
+        if move[0].isalpha() and move[1].isnumeric() and move[2].isnumeric() and move[3].isalpha():
+            row = ord(move[0]) - 65
+            col = int(int(str(move[1]) + str(move[2]))) - 1
+            orient = move[3]
+            if row > len(board)-1 or col > len(board)-1 or col == -1 or orient != "H" and orient != "V":
+                print("Invalid input! Try again!")
+                return False, 0, 0, 0
+            return True, row, col, orient
+        else:
+            print("Invalid input! Try again!")
+            return False, 0, 0, 0
+    else:
+        print("Invalid input! Try again!")
+        return False, 0, 0, 0
 
 
+def mark(board, row, col, orient, key, value, dict):
+    while True:
+        try:
+            if board[row][col] == "🇴":
+                if orient == "H":
+                    for i in range(value):
+                        if col+value <= len(board):
+                            board[row][col+i] = "🇽"
+                            coordinate = row, col+i
+                            dict[key] += [coordinate]
+                        else:
+                            raise IndexError
+                elif orient == "V":
+                    for i in range(value):
+                        if row+value <= len(board):
+                            board[row+i][col] = "🇽"
+                            coordinate = row+i, col
+                            dict[key] += [coordinate]
+                        else:
+                            raise IndexError
+        except IndexError:
+            while True:
+                print("Rossz!")
+                move = get_move()
+                is_valid, row, col, orient = is_valid_input(board, move)
+                if not is_valid or not check_shot(row, col, dict, key, orient, board):
+                    continue
+                else:
+                    break
+            continue
+        return dict
 
-def shooting_phase():
-    # player 1 kezd,
-    # tippel, a szabályoknak megfelelően történik valami a shooting boardon
-    # a shooting board kerül kiprintelésre, és a hajók felfedésére a mark függvénnyel
-    # körök vannak, player 2 második kör, és így tovább
-    # win conditions ellenőrzi, hogy nyer-e valaki
-    pass
+
+def check_shot(row, col, dict, key, orient, board):
+    if key == "Big":
+        if orient == "H":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) or (row, col+3) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+        elif orient == "V":
+            for i in dict.values():
+                for y in range(len(i)):
+                    if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) or (row+3, col) == i[y]:
+                        print("rossz")
+                        return False
+            print("jó")
+            return True
+    elif key == "Medium":
+        if orient == "H":
+            try:
+                for i in dict.values():
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row, col+1) == i[y] or (row, col+2) == i[y] or board[row][col+3] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row+1][col+2] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽" or board[row-1][col+2] == "🇽":
+                            print("rossz")
+                            return False
+            except IndexError:
+                if col+3 <= len(board):
+                    return True
+                print("rossz")
+                return False
+            print("jó")
+            return True
+        elif orient == "V":
+            try:
+                for i in dict.values():
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y] or board[row+3][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row+2][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col-1] == "🇽" or board[row+2][col-1] == "🇽":
+                            print("rossz")
+                            return False
+            except IndexError:
+                if row+3 <= len(board):
+                    return True
+                print("rossz")
+                return False
+            print("jó")
+            return True
+    elif key == "Small":
+        if orient == "H":
+            try:
+                for i in dict.values():
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row, col+1) == i[y] or board[row][col+2] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col] == "🇽" or board[row+1][col+1] == "🇽" or board[row-1][col] == "🇽" or board[row-1][col+1] == "🇽":
+                            print("rossz")
+                            return False
+            except IndexError:
+                if col+2 <= len(board):
+                    return True
+                print("rossz")
+                return False
+            print("jó")
+            return True
+        elif orient == "V":
+            for i in dict.values():
+                try:
+                    for y in range(len(i)):
+                        if (row, col) == i[y] or (row+1, col) == i[y] or board[row+2][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col-1] == "🇽":
+                            print("rossz")
+                            return False
+                except IndexError:
+                    if row+2 <= len(board):
+                        return True
+                    print("rossz")
+                    return False
+            print("jó")
+            return True
 
 
-def mark(board, row, col):
-    # a játékos vagy az ai lépését felviszi a megfelelő játékos shooting boardjára
-    # gyakorlatilag a visszakapott row, col értéket behelyetesíti a szabályoknak megfelelő betüvel
-    # ellenőrzi, akár itt, akár egy külön függvényben, hogy egy hajó összes elemét megtalálták-e, ilyenkor elsüllyed
-    if board[row][col] == "O":
-        board[row][col] = "X"
+def can_shoot(move, hits_list, board): # Ellenőrzi, hogy a lövés valid helyre történt-e
+    move = move.upper()
+    while True:
+        if len(move) == 2:
+            if move[0].isalpha() and move[1].isnumeric() and int(move[1]) <= len(board):
+                row = ord(move[0]) - 65
+                col = int(move[1]) - 1
+                if ((row, col) in hits_list) or row > len(board)-1 or col > len(board) or col < 0:
+                    print("rossz")
+                    return False, 0, 0
+                return True, row, col
+            print("rossz")
+            return False, 0, 0
+        elif len(move) == 3:
+            if move[0].isalpha() and move[1:].isnumeric() and int(move[1:]) <= len(board):
+                row = ord(move[0]) - 65
+                col = int(move[1:]) - 1
+                if ((row, col) in hits_list) or row > len(board)-1 or col > len(board) or col < 0:
+                    print("rossz")
+                    return False, 0, 0
+                return True, row, col
+            print("rossz")
+            return False, 0, 0
+        else:
+            print("rossz")
+            return False, 0, 0
+
+    
+def placement_phase(board1, board2, player1, player2):
+    player = player1
+    
+    ships = {"Big": 4, "Medium": 3, "Small": 2}
+    
+    dict = {"Big": [], "Medium": [], "Small": []}
+    dict2 = {"Big": [], "Medium": [], "Small": []}
+
+    while player == player1:
+        for key, value in ships.items():
+            while True:
+                print_board(board1)
+                move = get_move()
+                is_valid, row, col, orient = is_valid_input(board1, move)
+                clear(1)
+                if not is_valid or not check_shot(row, col, dict, key, orient, board1):
+                    continue
+                else:
+                    break
+            dict = mark(board1, row, col, orient, key, value, dict)
+            clear(0)
+        print_board(board1)
+        player = change_player(player, player1, player2)
+        break
+    input("Next player's placement phase")
+    while player == player2:
+        for key, value in ships.items():
+            while True:
+                print_board(board2)
+                move = get_move()
+                is_valid, row, col, orient = is_valid_input(board2, move)
+                clear(1)
+                if not is_valid or not check_shot(row, col, dict2, key, orient, board2):
+                    continue
+                else:
+                    break
+            dict2 = mark(board2, row, col, orient, key, value, dict2)
+            clear(0)
+        print_board(board2)
+        break
+    print(dict)
+    print(dict2)
+    return dict, dict2
 
 
-def win_conditions():
-    # turn limit, 50 kör után döntetlen
-    # ha elsüllyed valaki összes hajója, nyer az ellenfél
-    # stb, szabályoknak megfelelően
-    pass
+def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess2):
+    player = player1
+    while player == player1:
+        clear(1)
+        print_board(board2)
+        move = get_move()
+        valid, row, col = can_shoot(move, guess1, board2)
+        if valid == False:
+            continue
+        else:
+            break
+    for key, value in dict2.items():
+        if (row, col) in value:
+            guess1.append((row, col))
+    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2)
+    
+    big = []
+    medium = []
+    small = []
+    for i in guess1:
+        for value in dict2.values():
+            if len(value) == 4:
+                if i in value:
+                    big.append(i)
+            elif len(value) == 3:
+                if i in value:
+                    medium.append(i)
+            elif len(value) == 2:
+                if i in value:
+                    small.append(i)
+    
+
+    if len(big) == 4:
+        for i in big:
+            row, col = i
+            board2[row][col] = "🇸"
+    if len(medium) == 3:
+        for i in medium:
+            row, col = i
+            board2[row][col] = "🇸"
+    if len(small) == 2:
+        for i in small:
+            row, col = i
+            board2[row][col] = "🇸"
+
+    clear(1)
+    print(guess1)
+    print_board(board2)
+    player = change_player(player, player1, player2)
+
+    if len(big) + len(medium) + len(small) == 9:
+        return True, player1
+
+    while player == player2:
+        clear(1)
+        print_board(board1)
+        move = get_move()
+        valid, row, col = can_shoot(move, guess2, board1)
+        if valid == False:
+            continue
+        else:
+            break
+    for key, value in dict1.items():
+        if (row, col) in value:
+            guess2.append((row, col))
+    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2)
+
+    big = []
+    medium = []
+    small = []
+    for i in guess2:
+        for value in dict1.values():
+            if len(value) == 4:
+                if i in value:
+                    big.append(i)
+            elif len(value) == 3:
+                if i in value:
+                    medium.append(i)
+            elif len(value) == 2:
+                if i in value:
+                    small.append(i)
+    
+
+    if len(big) == 4:
+        for i in big:
+            row, col = i
+            board1[row][col] = "🇸"
+    if len(medium) == 3:
+        for i in medium:
+            row, col = i
+            board1[row][col] = "🇸"
+    if len(small) == 2:
+        for i in small:
+            row, col = i
+            board1[row][col] = "🇸"
+
+    clear(1)
+    print(guess2)
+    print_board(board1)
+    change_player(player, player1, player2)
+
+    if len(big) + len(medium) + len(small) == 9:
+        return True, player2
+
+    return False, player1
+
+
+def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2):
+    if player == player1:
+        for value in dict2.values():
+            for tupl in value:
+                if (row, col) == tupl:
+                    board2[row][col] = "🇭"
+                    return
+                else:
+                    board2[row][col] = "🇲"
+    elif player == player2:
+        for value in dict1.values():
+            for tupl in value:
+                if (row, col) == tupl:
+                    board1[row][col] = "🇭"
+                    return
+                else:
+                    board1[row][col] = "🇲"
 
 
 def main():
     clear(0)
-    menu()
-    clear(1)
-    player1, player2 = get_players()
+    player1, player2 = menu()
     clear(1)
     size = board_size()
     player_1_placement_board = init_board(size)
@@ -142,11 +511,14 @@ def main():
     player_1_shooting_board = copy.deepcopy(player_1_placement_board)
     player_2_shooting_board = copy.deepcopy(player_1_placement_board)
     clear(1)
+    dict1, dict2 = placement_phase(player_1_placement_board, player_2_placement_board, player1, player2)
+    guesses1 = []
+    guesses2 = []
     while True:
-        placement_phase(player_1_placement_board)
-        shooting_phase()
-        if win_conditions():  # ekkor van vége a játéknak
-            return
+        end, player = shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2, guesses1, guesses2)
+        if end:
+            break
+    print(f"vége {player} nyert ")
 
 
 if __name__ == "__main__":
