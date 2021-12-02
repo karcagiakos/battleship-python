@@ -1,7 +1,7 @@
 import time
 import os
 import string
-# import copy
+import copy
 # import random
 # import pygame
 
@@ -66,6 +66,14 @@ def game_mode():
         clear(1)
 
 
+def change_player(player, player1, player2):
+    if player == player1:
+        player = player2
+    else:
+        player = player1
+    return player
+
+
 def players(mode):
     if mode == 1:
         player1 = input("Enter your name:\n- ")
@@ -77,7 +85,7 @@ def players(mode):
 
 
 def get_move():
-    move = input("\nPlease give valid cooridanates:\n- ")
+    move = input("\nPlease give valid coordinates:\n- ")
     return move
 
 
@@ -202,23 +210,49 @@ def win_conditions():
     pass
 
 
-def placement_phase(board):
+def placement_phase(board1, board2, player1, player2):
+    player = player1
+    
     ships = {"Big": 4, "Medium": 3, "Small": 2}
+    
     dict = {"Big": [], "Medium": [], "Small": []}
-    for key, value in ships.items():
-        while True:
-            print_board(board)
-            move = get_move()
-            is_valid, row, col, orient = is_valid_input(board, move)
-            clear(1)
-            if not is_valid or not check_shot(row, col, dict, key, orient, board):
-                continue
-            else:
-                break
-        dict = mark(board, row, col, orient, key, value, dict)
-        clear(0)
-    print_board(board)
+    dict2 = {"Big": [], "Medium": [], "Small": []}
+
+    while True:
+        for key, value in ships.items():
+            while True:
+                print_board(board1)
+                move = get_move()
+                is_valid, row, col, orient = is_valid_input(board1, move)
+                clear(1)
+                if not is_valid or not check_shot(row, col, dict, key, orient, board1):
+                    continue
+                else:
+                    break
+            dict = mark(board1, row, col, orient, key, value, dict)
+            clear(0)
+        print_board(board1)
+        break
+    input("Next player's placement phase")
+    while True:
+        for key, value in ships.items():
+            while True:
+                print_board(board2)
+                move = get_move()
+                is_valid, row, col, orient = is_valid_input(board2, move)
+                clear(1)
+                if not is_valid or not check_shot(row, col, dict2, key, orient, board2):
+                    continue
+                else:
+                    break
+            dict2 = mark(board2, row, col, orient, key, value, dict2)
+            clear(0)
+        print_board(board2)
+        break
     print(dict)
+    print(dict2)
+    return dict, dict2
+
 
 
 def check_shot(row, col, dict, key, orient, board):
@@ -258,7 +292,7 @@ def check_shot(row, col, dict, key, orient, board):
             try:
                 for i in dict.values():
                     for y in range(len(i)):
-                        if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y] or board[row+3][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row+2][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row-1][col-1] == "🇽" or board[row-2][col-1] == "🇽":
+                        if (row, col) == i[y] or (row+1, col) == i[y] or (row+2, col) == i[y] or board[row+3][col] == "🇽" or board[row-1][col] == "🇽" or board[row][col+1] == "🇽" or board[row+1][col+1] == "🇽" or board[row+2][col+1] == "🇽" or board[row][col-1] == "🇽" or board[row+1][col-1] == "🇽" or board[row+2][col-1] == "🇽":
                             print("rossz")
                             return False
             except IndexError:
@@ -333,11 +367,11 @@ def main():
     clear(1)
     size = board_size()
     player_1_placement_board = init_board(size)
-    # player_2_placement_board = copy.deepcopy(player_1_placement_board)
+    player_2_placement_board = copy.deepcopy(player_1_placement_board)
     # player_1_shooting_board = copy.deepcopy(player_1_placement_board)
     # player_2_shooting_board = copy.deepcopy(player_1_placement_board)
     clear(1)
-    placement_phase(player_1_placement_board)
+    placement_phase(player_1_placement_board, player_2_placement_board, player1, player2)
     shooting_phase()
     if win_conditions():
         return
