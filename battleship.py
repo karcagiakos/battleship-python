@@ -224,11 +224,6 @@ def mark(board, row, col, orient, key, value, dict):
         return dict
 
 
-def win_conditions():
-    pass
-
-
-
 def check_shot(row, col, dict, key, orient, board):
     if key == "Big":
         if orient == "H":
@@ -424,12 +419,14 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess
         for i in small:
             row, col = i
             board2[row][col] = "🇸"
-    
 
     clear(1)
     print(guess1)
     print_board(board2)
     player = change_player(player, player1, player2)
+
+    if len(big) + len(medium) + len(small) == 9:
+        return True, player1
 
     while player == player2:
         clear(1)
@@ -479,6 +476,9 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess
     print_board(board1)
     change_player(player, player1, player2)
 
+    if len(big) + len(medium) + len(small) == 9:
+        return True, player2
+
 
 def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2):
     if player == player1:
@@ -513,9 +513,9 @@ def main():
     guesses1 = []
     guesses2 = []
     while True:
-        shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2, guesses1, guesses2)
-    if win_conditions():
-        return
+        if shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2, guesses1, guesses2):
+            break
+    print("vége ")
 
 
 if __name__ == "__main__":
