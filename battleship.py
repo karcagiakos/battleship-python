@@ -380,25 +380,54 @@ def placement_phase(board1, board2, player1, player2):
     return dict, dict2
 
 
-def shooting_phase(board1, board2, dict1, dict2, player1, player2):
+def shooting_phase(board1, board2, dict1, dict2, player1, player2, guess1, guess2):
     player = player1
-    guesses1 = []
-    guesses2 = []
-
     while player == player1:
         clear(1)
         print_board(board2)
         move = get_move()
-        valid, row, col = can_shoot(move, guesses1, board2)
+        valid, row, col = can_shoot(move, guess1, board2)
         if valid == False:
             continue
         else:
             break
     for key, value in dict2.items():
         if (row, col) in value:
-            guesses1.append((row, col))
-    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2)
+            guess1.append((row, col))
+    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2)
+    
+    big = []
+    medium = []
+    small = []
+    for i in guess1:
+        for value in dict2.values():
+            if len(value) == 4:
+                if i in value:
+                    big.append(i)
+            elif len(value) == 3:
+                if i in value:
+                    medium.append(i)
+            elif len(value) == 2:
+                if i in value:
+                    small.append(i)
+    
+
+    if len(big) == 4:
+        for i in big:
+            row, col = i
+            board2[row][col] = "🇸"
+    elif len(medium) == 3:
+        for i in medium:
+            row, col = i
+            board2[row][col] = "🇸"
+    elif len(small) == 2:
+        for i in small:
+            row, col = i
+            board2[row][col] = "🇸"
+    
+
     clear(1)
+    print(guess1)
     print_board(board2)
     player = change_player(player, player1, player2)
 
@@ -406,21 +435,22 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
         clear(1)
         print_board(board1)
         move = get_move()
-        valid, row, col = can_shoot(move, guesses1, board1)
+        valid, row, col = can_shoot(move, guess2, board1)
         if valid == False:
             continue
         else:
             break
     for key, value in dict1.items():
         if (row, col) in value:
-            guesses2.append((row, col))
-    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2)
+            guess2.append((row, col))
+    change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2)
     clear(1)
+    print(guess2)
     print_board(board1)
     change_player(player, player1, player2)
 
 
-def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2):
+def change_shot(row, col, dict1, dict2, board1, board2, player, player1, player2, guess1, guess2):
     if player == player1:
         for value in dict2.values():
             for tupl in value:
@@ -450,8 +480,10 @@ def main():
     player_2_shooting_board = copy.deepcopy(player_1_placement_board)
     clear(1)
     dict1, dict2 = placement_phase(player_1_placement_board, player_2_placement_board, player1, player2)
+    guesses1 = []
+    guesses2 = []
     while True:
-        shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2)
+        shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2, guesses1, guesses2)
     if win_conditions():
         return
 
