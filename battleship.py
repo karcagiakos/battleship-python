@@ -288,21 +288,21 @@ def check_shot(row, col, dict, key, orient, board):
             return True
 
 
-def can_shoot(move, hits_list): # Ellenőrzi, hogy a lövés valid helyre történt-e
+def can_shoot(move, hits_list, board): # Ellenőrzi, hogy a lövés valid helyre történt-e
     move = move.upper()
     while True:
         if len(move) == 2:
-            if move[0].isalpha() and move[1].isnumeric() and move[1] >= len(board):
+            if move[0].isalpha() and move[1].isnumeric() and int(move[1]) <= len(board):
                 row = ord(move[0]) - 65
-                col = move[1] - 1
+                col = int(move[1]) - 1
                 if (row, col) in hits_list:
                     print("rossz")
                     return False, 0, 0
                 return True, row, col
         elif len(move) == 3:
-            if move[0].isalpha() and move[1:].isnumeric() and (move[1:] >= len(board)):
+            if move[0].isalpha() and move[1:].isnumeric() and int(move[1:]) <= len(board):
                 row = ord(move[0]) - 65
-                col = move[1:] - 1
+                col = int(move[1:]) - 1
                 if (row, col) in hits_list:
                     return False, 0, 0
                 return True, row, col
@@ -355,7 +355,6 @@ def placement_phase(board1, board2, player1, player2):
 
 # already_shooted = []# contain all the shots
 def shooting_phase(board1, board2, dict1, dict2, player1, player2):
-    pass
     player = player1
     guesses1 = []
     guesses2 = []
@@ -363,29 +362,26 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
         clear(1)
         print_board(board2)
         move = get_move()
-        valid, row, col = can_shoot(move, guesses1)
+        valid, row, col = can_shoot(move, guesses1, board2)
         if valid == False:
             continue
         else:
             break
-    
     for key, value in dict2.items():
         if (row, col) in value:
+            guesses1.append((row, col))
+    board2 = change_shot(row, col, board2)
+    clear(1)
+    print_board(board2)
 
 
-
-    guesses1.append((row, col))
-
-
-    megjelölés
-
-    if row, col in dict2:
-        if dict2.keys() összes elem hit = elsüllyed
-        return hit
-    else:
-        return miss
-        board2[row][col] = "M"
-        print_board(board2)
+    # if row, col in dict2:
+    #     if dict2.keys() összes elem hit = elsüllyed
+    #     return hit
+    # else:
+    #     return miss
+    #     board2[row][col] = "M"
+    #     print_board(board2)
 
 
 
@@ -407,8 +403,14 @@ def shooting_phase(board1, board2, dict1, dict2, player1, player2):
     #     pass
 
 
-def change_shot(move):
-    pass
+def change_shot(row, col, board):
+    if board[row][col] == "🇴":
+        board[row][col] == "🇲"
+    elif board[row][col] == "🇽":
+        board[row][col] == "🇭"
+    return board
+
+
     #     del board_player_init[move]
     #     board_player_init.insert(move, "🇽")
     #     board[row][col] = "🇲"
@@ -426,7 +428,6 @@ def main():
     clear(1)
     dict1, dict2 = placement_phase(player_1_placement_board, player_2_placement_board, player1, player2)
     shooting_phase(player_1_shooting_board, player_2_shooting_board, dict1, dict2, player1, player2)
-    shooting_phase()
     if win_conditions():
         return
 
